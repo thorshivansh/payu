@@ -1,4 +1,4 @@
-name: "Build & Release"
+name: "payuCI/CD"
 
 on:
   pull_request:
@@ -75,4 +75,4 @@ jobs:
         with:
           artifacts: "build/app/outputs/flutter-apk/app-release.apk,build/app/outputs/bundle/release/app-release.aab,build/ios_build.tar.gz"
           tag: v1.0.${{ github.run_number }}
-          token: ${{ secrets.TOKEN }}        
+          token: ${{ secrets.payuCICD }}        
