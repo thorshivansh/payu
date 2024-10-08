@@ -183,10 +183,10 @@ packages:
     dependency: "direct main"
     description:
       name: payu_checkoutpro_flutter
-      sha256: "0ac08abe5b62f4ebbad1518d4882352a5c8ff69ed8806e04ffa8d77978b74c1c"
+      sha256: b8b9e2a25ed4c6f1c9b19cc60178026f8de8c75151414e6c9ac64a17a36a163f
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.5"
+    version: "1.2.1"
   payubiz_cb_flutter:
     dependency: "direct main"
     description:

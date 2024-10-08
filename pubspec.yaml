@@ -36,7 +36,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
   crypto: ^3.0.2
-  payu_checkoutpro_flutter: ^1.1.5
+  payu_checkoutpro_flutter: ^1.2.1
   http: ^1.2.1
   shelf: ^1.4.1
   dio: ^5.4.3+1
