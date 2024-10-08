@@ -1,77 +1,48 @@
-name: "payuCI/CD"
+name: Flutter CI for Testing
 
 on:
-  # pull_request:
-  #   branches:
-  #     - main
-  #     - shivanshu_dev
   push:
     branches:
-      - master
+      - main  # Runs the workflow on pushes to the 'main' branch
+  pull_request:
+    branches:
+      - main  # Runs the workflow on pull requests to the 'main' branch
 
 jobs:
   build:
-    name: Build & Release
-    runs-on: macos-latest
-
+    runs-on: ubuntu-latest
     steps:
-        #1 Checkout repository
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-        #2 setup java
-      - name: Set Up Java
-        uses: actions/setup-java@v3.12.0
-        with:
-          distribution: 'oracle'
-          java-version: '17'
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: "3.19.0"
 
-        #3 setup Flutter
-      - name: Set Up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.19.6'
-          channel: 'stable'
+    - name: Install Flutter dependencies
+      run: flutter pub get
 
-        #4 install dependencies
-      - name: Install Dependencies
-        run: flutter pub get
+    - name: Analyze code
+      run: flutter analyze
 
-        #5 run test
-      # - name: Test flutter app
-      #   run: flutter test
+    - name: Run tests
+      run: flutter test
 
-        #6 build apk
-      - name: Build APK
-        run: flutter build apk --release
+    - name: Build Debug APK
+      run: flutter build apk --debug  # Build debug APK
 
-        #7 build aab
-      - name: Build appBundle
-        run: flutter build appbundle
+    - name: Build Release APK
+      run: flutter build apk --release  # Build release APK
 
-        #8 build ipa
-      # - name: Build IPA
-      #   run:
-      #     flutter build ipa --no-codesign
-      # - name: Compress Archives and IPAs
-      #   run: |
-      #     cd build
-      #     tar -czf ios_build.tar.gz ios
+    - name: Upload Debug APK
+      uses: actions/upload-artifact@v3
+      with:
+        name: debug-apk
+        path: build/app/outputs/flutter-apk/app-debug.apk
 
-        #9 get those build to be available to download
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: Releases
-          path: |
-            build/app/outputs/flutter-apk/app-release.apk
-            build/app/outputs/bundle/release/app-release.aab
-            # build/ios_build.tar.gz
-
-        #10 create release with those builds 
-      - name: Create Release
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "build/app/outputs/flutter-apk/app-release.apk,build/app/outputs/bundle/release/app-release.aab"
-          tag: v1.0.${{ github.run_number }}
-          token: ${{ secrets.payuCICD }}        
+    - name: Upload Release APK
+      uses: actions/upload-artifact@v3
+      with:
+        name: release-apk
+        path: build/app/outputs/flutter-apk/app-release.apk
