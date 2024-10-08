@@ -38,6 +38,9 @@ dependencies:
   crypto: ^3.0.2
   payu_checkoutpro_flutter: ^1.1.5
   http: ^1.2.1
+  shelf: ^1.4.1
+  dio: ^5.4.3+1
+  payubiz_cb_flutter: ^0.0.2
   # http_requests: ^3.2.0
 
 dev_dependencies:

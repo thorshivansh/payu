@@ -1,14 +1,13 @@
 name: "payuCI/CD"
 
 on:
-  pull_request:
-    branches:
-      - main
-      - shivanshu_dev
+  # pull_request:
+  #   branches:
+  #     - main
+  #     - shivanshu_dev
   push:
     branches:
-      - shivanshu_dev
-      - shivanshu_prod
+      - master
 
 jobs:
   build:
