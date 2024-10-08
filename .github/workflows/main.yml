@@ -6,7 +6,7 @@ on:
       - main  # Runs the workflow on pushes to the 'main' branch
   pull_request:
     branches:
-      - main  # Runs the workflow on pull requests to the 'main' branch
+      - main  # Runs the workflow on pull requests to the 'main' bran
 
 jobs:
   build:
