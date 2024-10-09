@@ -32,10 +32,10 @@ jobs:
       continue-on-error: true  # Ignore failures in the test step
 
     - name: Build Debug APK
-      run: flutter build apk --debug  # Build debug APK
+      run: flutter build apk --debug --no-tree-shake-icons  # Build debug APK
 
     - name: Build Release APK
-      run: flutter build apk --release  # Build release APK
+      run: flutter build apk --release --no-tree-shake-icons # Build release APK
 
     - name: Upload Debug APK
       uses: actions/upload-artifact@v4  # Updated to v4 for Node.js 20 compatibility
