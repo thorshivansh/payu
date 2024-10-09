@@ -1,24 +1,23 @@
-name: Flutter CI for Testing
+name: Build APK and AAB for Release
 
 on:
   push:
     branches:
       - main  # Runs the workflow on pushes to the 'main' branch
-  pull_request:
-    branches:
-      - main  # Runs the workflow on pull requests to the 'main' branch
+    tags:
+      - 'v*.*.*'  # Runs on version tags (e.g., v1.0.6)
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4  # Updated to v4 for Node.js 20 compatibility
+      uses: actions/checkout@v4
 
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: "3.19.6"
+        flutter-version: "3.19.0"
 
     - name: Install Flutter dependencies
       run: flutter pub get
@@ -32,19 +31,28 @@ jobs:
       continue-on-error: true  # Ignore failures in the test step
 
     - name: Build Debug APK
-      run: flutter build apk --debug --no-tree-shake-icons  # Build debug APK
+      run: flutter build apk --debug --no-tree-shake-icons  # Generate debug  APK
 
     - name: Build Release APK
-      run: flutter build apk --release --no-tree-shake-icons # Build release APK
+      run: flutter build apk --release --debug --no-tree-shake-icons  # Generate the APK
 
-    - name: Upload Debug APK
-      uses: actions/upload-artifact@v4  # Updated to v4 for Node.js 20 compatibility
-      with:
-        name: debug-apk
-        path: build/app/outputs/flutter-apk/app-debug.apk
+    - name: Build AAB
+      run: flutter build appbundle --no-tree-shake-icons  # Generate the AAB
 
     - name: Upload Release APK
-      uses: actions/upload-artifact@v4  # Updated to v4 for Node.js 20 compatibility
+      uses: actions/upload-artifact@v4
       with:
-        name: release-apk
-        path: build/app/outputs/flutter-apk/app-release.apk
+        name: app-release.apk
+        path: build/app/outputs/flutter-apk/app-release.apk  # Path to the APK
+
+    - name: Upload Debug APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: app-debug.apk
+        path: build/app/outputs/flutter-apk/app-debug.apk  # Path to the APK
+
+    - name: Upload AAB
+      uses: actions/upload-artifact@v4
+      with:
+        name: app-release.aab
+        path: build/app/outputs/bundle/release/app-release.aab  # Path to the AAB
