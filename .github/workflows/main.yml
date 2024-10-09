@@ -6,30 +6,29 @@ on:
       - main  # Runs the workflow on pushes to the 'main' branch
   pull_request:
     branches:
-      - main  # Runs the workflow on pull requests to the 'main' bran
+      - main  # Runs the workflow on pull requests to the 'main' branch
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4  # Updated to v4 for Node.js 20 compatibility
 
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: "3.19.6"
+        flutter-version: "3.19.0"
 
     - name: Install Flutter dependencies
       run: flutter pub get
 
     - name: Analyze code
       run: flutter analyze
-      continue-on-error: true
+      continue-on-error: true  # Ignore failures in the analyze step
 
     - name: Run tests
       run: flutter test
-      continue-on-error: true
 
     - name: Build Debug APK
       run: flutter build apk --debug  # Build debug APK
@@ -38,13 +37,13 @@ jobs:
       run: flutter build apk --release  # Build release APK
 
     - name: Upload Debug APK
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4  # Updated to v4 for Node.js 20 compatibility
       with:
         name: debug-apk
         path: build/app/outputs/flutter-apk/app-debug.apk
 
     - name: Upload Release APK
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4  # Updated to v4 for Node.js 20 compatibility
       with:
         name: release-apk
         path: build/app/outputs/flutter-apk/app-release.apk
