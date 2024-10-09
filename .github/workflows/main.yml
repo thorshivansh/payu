@@ -34,7 +34,7 @@ jobs:
       run: flutter build apk --debug --no-tree-shake-icons  # Generate debug  APK
 
     - name: Build Release APK
-      run: flutter build apk --release --debug --no-tree-shake-icons  # Generate the APK
+      run: flutter build apk --release --no-tree-shake-icons  # Generate the APK
 
     - name: Build AAB
       run: flutter build appbundle --no-tree-shake-icons  # Generate the AAB
