@@ -3,7 +3,7 @@ name: Build APK and AAB for Release
 on:
   push:
     branches:
-      - main  # Runs the workflow on pushes to the 'main' branch
+      - master  # Runs the workflow on pushes to the 'main' branch
     tags:
       - 'v*.*.*'  # Runs on version tags (e.g., v1.0.6)
 
