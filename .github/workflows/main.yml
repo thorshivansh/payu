@@ -1,58 +1,82 @@
-name: Build APK and AAB for Release
+name: "Build & Release"
 
 on:
+  pull_request:
+    branches:
+      - main
+      - shivanshu_dev
   push:
     branches:
-      - master  # Runs the workflow on pushes to the 'main' branch
-    tags:
-      - 'v*.*.*'  # Runs on version tags (e.g., v1.0.6)
+      - shivanshu_dev
+      - shivanshu_prod
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    name: Build & Release
+    runs-on: macos-latest
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      # 1. Checkout repository
+      - name: Checkout Repository
+        uses: actions/checkout@v4  # Updated to v4
 
-    - name: Set up Flutter
-      uses: subosito/flutter-action@v2
-      with:
-        flutter-version: "3.19.6"
+      # 2. Setup Java
+      - name: Set Up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'oracle'
+          java-version: '17'
 
-    - name: Install Flutter dependencies
-      run: flutter pub get
+      # 3. Setup Flutter
+      - name: Set Up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.6'
+          channel: 'stable'
 
-    - name: Analyze code
-      run: flutter analyze
-      continue-on-error: true  # Ignore failures in the analyze step
+      # 4. Install dependencies
+      - name: Install Dependencies
+        run: flutter pub get
 
-    - name: Run tests
-      run: flutter test
-      continue-on-error: true  # Ignore failures in the test step
+      # 5. Run tests
+      - name: Test Flutter App
+        run: flutter test
 
-    - name: Build Debug APK
-      run: flutter build apk --debug --no-tree-shake-icons  # Generate debug  APK
+      # 6. Build APK
+      - name: Build APK
+        run: flutter build apk --release
 
-    - name: Build Release APK
-      run: flutter build apk --release --no-tree-shake-icons  # Generate the APK
+      # 7. Build AAB
+      - name: Build appBundle
+        run: flutter build appbundle
 
-    - name: Build AAB
-      run: flutter build appbundle --no-tree-shake-icons  # Generate the AAB
+      # 8. Build IPA
+      - name: Build IPA
+        run: flutter build ipa --no-codesign
 
-    - name: Upload Release APK
-      uses: actions/upload-artifact@v4
-      with:
-        name: app-release.apk
-        path: build/app/outputs/flutter-apk/app-release.apk  # Path to the APK
+      # 9. Compress iOS build into a .tar.gz archive
+      - name: Compress iOS Build
+        run: |
+          cd build
+          tar -czf ios_build.tar.gz ios
 
-    - name: Upload Debug APK
-      uses: actions/upload-artifact@v4
-      with:
-        name: app-debug.apk
-        path: build/app/outputs/flutter-apk/app-debug.apk  # Path to the APK
+      # 10. Upload APK, AAB, and iOS build
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4  # Updated to v4
+        with:
+          name: Releases
+          path: |
+            build/app/outputs/flutter-apk/app-release.apk
+            build/app/outputs/bundle/release/app-release.aab
+            build/ios_build.tar.gz
 
-    - name: Upload AAB
-      uses: actions/upload-artifact@v4
-      with:
-        name: app-release.aab
-        path: build/app/outputs/bundle/release/app-release.aab  # Path to the AAB
+      # 11. Create GitHub Release with the uploaded artifacts
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: |
+            build/app/outputs/flutter-apk/app-release.apk,
+            build/app/outputs/bundle/release/app-release.aab,
+            build/ios_build.tar.gz
+          tag: v1.0.${{ github.run_number }}
+          token: ${{ secrets.GITHUB_TOKEN }}
