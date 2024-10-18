@@ -49,11 +49,11 @@ jobs:
 
       # 6. Build APK
       - name: Build APK
-        run: flutter build apk --release
+        run: flutter build apk --release --no-tree-shake-icons
 
       # 7. Build AAB
       - name: Build appBundle
-        run: flutter build appbundle
+        run: flutter build appbundle --no-tree-shake-icons
 
       # 8. Build IPA
       - name: Build IPA
