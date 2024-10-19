@@ -51,7 +51,12 @@ jobs:
         # Explanation: Runs Flutter unit tests but doesn’t block the workflow if tests fail.
 
       # 7. Build APK
-      - name: Build APK
+      
+      # Explanation: Builds a debug APK for testing purposes.
+      - name: Build Debug APK
+        run: flutter build apk --debug --no-tree-shake-icons
+
+      - name: Build Release APK
         run: flutter build apk --release --no-tree-shake-icons
         # Explanation: Builds the release APK for Android.
 
@@ -60,14 +65,35 @@ jobs:
         run: flutter build appbundle --no-tree-shake-icons
         # Explanation: Builds the Android App Bundle (AAB), which is required for Play Store distribution.
 
-      # 9. Upload Android Artifacts (APK and AAB)
-      - name: Upload Android Artifacts
+
+        
+      - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         with:
-          name: Android Releases
-          path: |
-            ${{ github.workspace }}/build/app/outputs/flutter-apk/app-release.apk
-            ${{ github.workspace }}/build/app/outputs/bundle/release/app-release.aab
+          name: app-debug.apk
+          path: build/app/outputs/flutter-apk/app-debug.apk  # Path to the APK
+          
+          
+      - name: Upload Release APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release.apk
+          path: build/app/outputs/flutter-apk/app-release.apk  # Path to the APK
+
+      - name: Upload AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release.aab
+          path: build/app/outputs/bundle/release/app-release.aab  # Path to the AAB
+    
+      # 9. Upload Android Artifacts (APK and AAB)
+      # - name: Upload Android Artifacts
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: Android Releases
+      #     path: |
+      #       build/app/outputs/flutter-apk/app-release.apk
+      #       build/app/outputs/bundle/release/app-release.aab
         # Explanation: Uploads the APK and AAB to be available for the release step.
   
   # iOS Build Job
@@ -106,14 +132,21 @@ jobs:
           tar -czf ios_build.tar.gz ios
         # Explanation: Compresses the iOS build into a .tar.gz for easier artifact handling.
 
+  # 5. Upload IPA artifact
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: iOS-IPA
+          path: build/ios/ipa/Runner.ipa
       # 6. Upload iOS Artifacts
       - name: Upload iOS Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: iOS Releases
-          path: ${{ github.workspace }}/build/ios_build.tar.gz
+          
+          path:  build/ios_build.tar.gz
         # Explanation: Uploads the iOS build artifacts for the release step.
-  
+    
   # Create Release Job
   release:
     name: Create Release
@@ -141,10 +174,12 @@ jobs:
         with:
           tag: ${{ github.ref_name }}  # Automatically uses the pushed tag (e.g., v1.0.6)
           name: ${{ github.ref_name }}  # Set the release name as the tag name
-          artifacts: |
-            ${{ github.workspace }}/build/app/outputs/flutter-apk/app-release.apk
-            ${{ github.workspace }}/build/app/outputs/bundle/release/app-release.aab
-            ${{ github.workspace }}/build/ios_build.tar.gz
+          artifacts:     |
+           build/app/outputs/flutter-apk/app-debug.apk 
+           build/app/outputs/flutter-apk/app-release.apk
+           build/app/outputs/bundle/release/app-release.aab
+           build/ios/ipa/Runner.ipa 
+           build/ios_build.tar.gz
           token: ${{ secrets.HELLO }}
           generateReleaseNotes: false
           makeLatest: legacy
