@@ -4,24 +4,16 @@ on:
   push:
     tags:
       - 'v*.*.*' # Runs on version tags (e.g., v1.0.6)
-  # pull_request:
-  #   branches:
-  #     - main
-  #     - shivanshu_dev
-  # push:
-  #   branches:
-  #     - shivanshu_dev
-  #     - shivanshu_prod
 
 jobs:
-  build:
-    name: Build & Release
-    runs-on: macos-latest
-
+  # Android Build (Runs on Ubuntu)
+  android-build:
+    name: Build & Release Android
+    runs-on: ubuntu-latest  # Use Ubuntu for Android builds
     steps:
       # 1. Checkout repository
       - name: Checkout Repository
-        uses: actions/checkout@v4  # Updated to v4
+        uses: actions/checkout@v4
 
       # 2. Setup Java
       - name: Set Up Java
@@ -41,53 +33,98 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
-      - name: Analyze code
+      # 5. Analyze code (optional)
+      - name: Analyze Code
         run: flutter analyze
-        continue-on-error: true  # Ignore failures in the analyze step
-      # 5. Run tests
+        continue-on-error: true  # Ignore analyze failures
+
+      # 6. Run tests
       - name: Test Flutter App
         run: flutter test
-        continue-on-error: true  # Ignore failures in the analyze step
+        continue-on-error: true  # Ignore test failures
 
-
-      # 6. Build APK
+      # 7. Build APK
       - name: Build APK
         run: flutter build apk --release --no-tree-shake-icons
 
-      # 7. Build AAB
-      - name: Build appBundle
+      # 8. Build AAB
+      - name: Build App Bundle
         run: flutter build appbundle --no-tree-shake-icons
 
-      # 8. Build IPA
+      # 9. Upload Android Artifacts
+      - name: Upload Android Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Android Releases
+          path: |
+            build/app/outputs/flutter-apk/app-release.apk
+            build/app/outputs/bundle/release/app-release.aab
+
+  # iOS Build (Runs on macOS)
+  ios-build:
+    name: Build & Release iOS
+    runs-on: macos-latest  # Use macOS for iOS builds
+    steps:
+      # 1. Checkout repository
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # 2. Setup Flutter
+      - name: Set Up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.6'
+          channel: 'stable'
+
+      # 3. Install dependencies
+      - name: Install Dependencies
+        run: flutter pub get
+
+      # 4. Build IPA without code signing (for testing)
       - name: Build IPA
         run: flutter build ipa --no-codesign
 
-      # 9. Compress iOS build into a .tar.gz archive
+      # 5. Compress iOS build into a .tar.gz archive
       - name: Compress iOS Build
         run: |
           cd build
           tar -czf ios_build.tar.gz ios
 
-      # 10. Upload APK, AAB, and iOS build
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v4  # Updated to v4
+      # 6. Upload iOS Artifacts
+      - name: Upload iOS Artifacts
+        uses: actions/upload-artifact@v4
         with:
-          name: Releases
-          path: |
-            build/app/outputs/flutter-apk/app-release.apk
-            build/app/outputs/bundle/release/app-release.aab
-            build/ios_build.tar.gz
+          name: iOS Releases
+          path: build/ios_build.tar.gz
 
-      # 11. Create GitHub Release with the uploaded artifacts
+  # Release Job (depends on both Android and iOS builds)
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest  # Ubuntu is faster for release management
+    needs: [android-build, ios-build]  # Wait for both Android and iOS builds
+    steps:
+      # 1. Download Android Artifacts
+      - name: Download Android Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: Android Releases
+
+      # 2. Download iOS Artifacts
+      - name: Download iOS Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: iOS Releases
+
+      # 3. Create GitHub Release with the uploaded artifacts
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
           tag: ${{ github.ref_name }}  # Automatically picks the current tag
-          name: ${{ github.ref_name }}       # Use the current tag name for the release name
+          name: ${{ github.ref_name }}  # Use the current tag name for the release name
           artifacts: |
-           build/app/outputs/flutter-apk/app-release.apk
-           build/app/outputs/bundle/release/app-release.aab
-           build/ios_build.tar.gz"
-          token: ${{ secrets.HELLO }} 
+            build/app/outputs/flutter-apk/app-release.apk
+            build/app/outputs/bundle/release/app-release.aab
+            build/ios_build.tar.gz
+          token: ${{ secrets.GITHUB_TOKEN }}  # Use the GitHub token from secrets
           generateReleaseNotes: false
           makeLatest: legacy
