@@ -125,6 +125,6 @@ jobs:
             build/app/outputs/flutter-apk/app-release.apk
             build/app/outputs/bundle/release/app-release.aab
             build/ios_build.tar.gz
-          token: ${{ secrets.GITHUB_TOKEN }}  # Use the GitHub token from secrets
+          token: ${{ secrets.HELLO }}  # Use the GitHub token from secrets
           generateReleaseNotes: false
           makeLatest: legacy
