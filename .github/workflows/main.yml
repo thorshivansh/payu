@@ -121,10 +121,8 @@ jobs:
         with:
           tag: ${{ github.ref_name }}  # Automatically picks the current tag
           name: ${{ github.ref_name }}  # Use the current tag name for the release name
-          artifacts: |
-            build/app/outputs/flutter-apk/app-release.apk
-            build/app/outputs/bundle/release/app-release.aab
-            build/ios_build.tar.gz
+          artifacts: "build/app/outputs/flutter-apk/app-release.apk,build/app/outputs/bundle/release/app-release.aab,build/ios_build.tar.gz"
+
           token: ${{ secrets.HELLO }}  # Use the GitHub token from secrets
           generateReleaseNotes: false
           makeLatest: legacy
