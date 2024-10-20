@@ -95,7 +95,11 @@ jobs:
       # 5. List iOS Build Directory (to confirm correct paths)
       - name: List iOS Build Directory
         run: ls -R build/ios
-  
+        
+      - name: Compress Archives and IPAs
+        run: |
+          cd build
+          tar -czf ios_build.tar.gz ios 
       # 6. Upload IPA artifact (correct path based on file location)
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
