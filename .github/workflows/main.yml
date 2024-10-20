@@ -87,7 +87,12 @@ jobs:
       # 3. Install dependencies
       - name: Install Dependencies
         run: flutter pub get
-  
+
+
+      - name: change folder to ios
+        run: |
+         cd ios
+         pod install
       # 4. Build IPA (no code-signing for testing purposes)
       - name: Build IPA
         run: flutter build ipa --no-codesign
@@ -105,7 +110,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: iOS-IPA
-          path: build/ios/Runner.xcarchive/Products/Applications/Runner.ipa  # Update this path based on the output
+          path: build/ios/archive/Runner.xcarchive  # Update this path based on the output
   
       # 7. Upload iOS Build Archive
       - name: Upload iOS Build Archive

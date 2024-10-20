@@ -1,0 +1,105 @@
+PODS:
+  - Flutter (1.0.0)
+  - payu_checkoutpro_flutter (1.1.0):
+    - Flutter
+    - PayUIndia-CheckoutPro (~> 7.6)
+  - payubiz_cb_flutter (1.0.3):
+    - Flutter
+    - PayUIndia-Custom-Browser (~> 10.1)
+  - PayUIndia-Analytics (3.0.1):
+    - PayUIndia-NetworkReachability (~> 1.0)
+  - PayUIndia-AssetLibrary (3.3.3)
+  - PayUIndia-CardScanner (1.0.1)
+  - PayUIndia-CheckoutPro (7.6.2):
+    - PayUIndia-AssetLibrary (~> 3.3)
+    - PayUIndia-CardScanner (~> 1.0)
+    - PayUIndia-CheckoutProBase (~> 7.6)
+    - PayUIndia-CommonUI (~> 1.2)
+    - PayUIndia-CrashReporter (~> 3.0)
+    - PayUIndia-Custom-Browser (~> 10.2)
+    - PayUIndia-NativeOtpAssist (~> 3.3)
+    - PayUIndia-NetworkReachability (~> 1.0)
+    - PayUIndia-PayUParams (~> 5.4)
+    - PayUIndia-PG-SDK (~> 10.4)
+    - PayUIndia-UPICore (~> 9.2)
+  - PayUIndia-CheckoutProBase (7.6.2):
+    - PayUIndia-PayUParams (~> 5.4)
+  - PayUIndia-CommonUI (1.2.1):
+    - PayUIndia-Analytics (~> 3.0)
+  - PayUIndia-CrashReporter (3.0.1)
+  - PayUIndia-Custom-Browser (10.2.2):
+    - PayUIndia-CommonUI (~> 1.2)
+  - PayUIndia-Logger (4.0.1)
+  - PayUIndia-NativeOtpAssist (3.3.1):
+    - PayUIndia-Analytics (~> 3.0)
+    - PayUIndia-CommonUI (~> 1.2)
+    - PayUIndia-CrashReporter (~> 3.0)
+    - PayUIndia-NetworkReachability (~> 1.0)
+    - PayUIndia-PayUParams (~> 5.4)
+  - PayUIndia-Networking (4.1.1):
+    - PayUIndia-Logger (~> 4.0)
+  - PayUIndia-NetworkReachability (1.1.0)
+  - PayUIndia-PayUParams (5.4.1)
+  - PayUIndia-PG-SDK (10.4.2):
+    - PayUIndia-CrashReporter (~> 3.0)
+    - PayUIndia-NetworkReachability (~> 1.0)
+    - PayUIndia-PayUParams (~> 5.4)
+  - PayUIndia-UPICore (9.2.1):
+    - PayUIndia-CommonUI (~> 1.2)
+    - PayUIndia-Networking (~> 4.1)
+    - PayUIndia-PayUParams (~> 5.4)
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - payu_checkoutpro_flutter (from `.symlinks/plugins/payu_checkoutpro_flutter/ios`)
+  - payubiz_cb_flutter (from `.symlinks/plugins/payubiz_cb_flutter/ios`)
+
+SPEC REPOS:
+  trunk:
+    - PayUIndia-Analytics
+    - PayUIndia-AssetLibrary
+    - PayUIndia-CardScanner
+    - PayUIndia-CheckoutPro
+    - PayUIndia-CheckoutProBase
+    - PayUIndia-CommonUI
+    - PayUIndia-CrashReporter
+    - PayUIndia-Custom-Browser
+    - PayUIndia-Logger
+    - PayUIndia-NativeOtpAssist
+    - PayUIndia-Networking
+    - PayUIndia-NetworkReachability
+    - PayUIndia-PayUParams
+    - PayUIndia-PG-SDK
+    - PayUIndia-UPICore
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  payu_checkoutpro_flutter:
+    :path: ".symlinks/plugins/payu_checkoutpro_flutter/ios"
+  payubiz_cb_flutter:
+    :path: ".symlinks/plugins/payubiz_cb_flutter/ios"
+
+SPEC CHECKSUMS:
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  payu_checkoutpro_flutter: c5d04d1ef2764cf3a1de4b53971078e29e3412a0
+  payubiz_cb_flutter: dad905db917cda14df7f701c90435cb5bb61b226
+  PayUIndia-Analytics: 048ce2fd5848e2d36a0b7f5a6de008444a62e1a4
+  PayUIndia-AssetLibrary: 28dba1f804f038745e69184d68d72d4e7dac3c81
+  PayUIndia-CardScanner: 6af1322f1746247481b5d4cca85ca3fe7ec8e398
+  PayUIndia-CheckoutPro: 63d9186dade486adb6f01229d8c45c6bb33d529b
+  PayUIndia-CheckoutProBase: 1808c71d65c0a5484828b0187120d27c37e017a3
+  PayUIndia-CommonUI: 4244713958bcbca392a3ae239c46bbc15c74dd39
+  PayUIndia-CrashReporter: 93d52812b1fe9228aedff58a7d0481a6d02f29d6
+  PayUIndia-Custom-Browser: b385e20ee9c967e26f99a15f44e7d5f93c26d63e
+  PayUIndia-Logger: b233805720a7c5f5dc20fcc006e53a6212c8466d
+  PayUIndia-NativeOtpAssist: 72128b1005adad75614a8cdee9c2819737a5099e
+  PayUIndia-Networking: 5e3887b15eff7d3bb45e534d1e5481b98a9cdd56
+  PayUIndia-NetworkReachability: e53e36092b879314b3da697bfe8de5761d18b733
+  PayUIndia-PayUParams: 10fbeaf089230ccdd2262506c2f1552fbb5b1439
+  PayUIndia-PG-SDK: ea08a8c8ab8d982cf2c48afedd40721d09005f07
+  PayUIndia-UPICore: 95fd01ea45eb00ec71b845f2d88e06f8d52cb898
+
+PODFILE CHECKSUM: a57f30d18f102dd3ce366b1d62a55ecbef2158e5
+
+COCOAPODS: 1.15.2
