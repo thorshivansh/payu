@@ -67,50 +67,49 @@ jobs:
           name: app-release.aab
           path: build/app/outputs/bundle/release/app-release.aab
 
-  # iOS Build Job
+ # iOS Build Job
   ios-build:
     name: Build & Release iOS
     runs-on: macos-latest
-
+  
     steps:
       # 1. Checkout repository
       - name: Checkout Repository
         uses: actions/checkout@v4
-
+  
       # 2. Setup Flutter
       - name: Set Up Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.19.6'
           channel: 'stable'
-
+  
       # 3. Install dependencies
       - name: Install Dependencies
         run: flutter pub get
-
+  
       # 4. Build IPA (no code-signing for testing purposes)
       - name: Build IPA
         run: flutter build ipa --no-codesign
-
-      # 5. Compress iOS build into a .tar.gz archive
-      - name: Compress iOS Build
-        run: |
-          cd build
-          tar -czf ios_build.tar.gz ios
-
-      # 6. Upload IPA artifact
+  
+      # 5. List iOS Build Directory (to confirm correct paths)
+      - name: List iOS Build Directory
+        run: ls -R build/ios
+  
+      # 6. Upload IPA artifact (correct path based on file location)
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
         with:
           name: iOS-IPA
-          path: build/ios/ipa/Runner.ipa
-
+          path: build/ios/Runner.xcarchive/Products/Applications/Runner.ipa  # Update this path based on the output
+  
       # 7. Upload iOS Build Archive
       - name: Upload iOS Build Archive
         uses: actions/upload-artifact@v4
         with:
           name: iOS-Build-Tar
           path: build/ios_build.tar.gz
+  
 
   # Create Release Job
   release:
