@@ -1,20 +1,33 @@
-import 'dart:developer';
 
-import 'package:flutter/material.dart';
+
+import 'dart:developer';
+import 'package:uuid/uuid.dart';
+import 'package:payu/main.dart';
 import 'package:payu_checkoutpro_flutter/PayUConstantKeys.dart';
 //Remove this plugin when you implement the salt at your server..
 import 'package:crypto/crypto.dart';
 import 'dart:convert';
 
 class HashService {
+static const Uuid _uuid = Uuid();
+static String UuidtxnId ='';
+static String getUuid(){
+ List op=[];
+  op.sort();
+
+    UuidtxnId = _uuid.v7obj().toString();
+return UuidtxnId;
+ }
 //Find the test credentials from dev guide: https://devguide.payu.in/flutter-sdk-integration/getting-started-flutter-sdk/mobile-sdk-test-environment/ 
 //Keep the hash in backend for Security reasons. 
-static const merchantSalt = "XGnf2PQnMT1tXTGVB01CVYDpnXBVkwCB";// Add you Salt here. 
+static const livemerchantSalt = "";// Add you Salt here. 
+static const testemerchantSalt = "mMprU4id";// Add you Salt here. 
 static const merchantSecretKey = "";// Add Merchant Secrete Key - Optional
 
   static Map generateHash(Map response) {
 
     
+    log('print------------PESU---------- :sdk hash: $response');
     var hashName = response[PayUHashConstantsKeys.hashName];
     var hashStringWithoutSalt = response[PayUHashConstantsKeys.hashString];
     var hashType = response[PayUHashConstantsKeys.hashType];
@@ -23,13 +36,13 @@ static const merchantSecretKey = "";// Add Merchant Secrete Key - Optional
     var hash = "";
 
     if (hashType == PayUHashConstantsKeys.hashVersionV2) {
-      hash = getHmacSHA256Hash(hashStringWithoutSalt, merchantSalt);
+      hash = getHmacSHA256Hash(hashStringWithoutSalt, testemerchantSalt);
     } else if (hashName == PayUHashConstantsKeys.mcpLookup) {
       hash = getHmacSHA1Hash(hashStringWithoutSalt, merchantSecretKey);
     } else {
     log('print------------PESU---------- :hasnname: $hashName');
     log('print------------PESU---------- :hashStringWithoutSalt: $hashStringWithoutSalt');
-      var hashDataWithSalt = "$hashStringWithoutSalt$merchantSalt";
+      var hashDataWithSalt = "$hashStringWithoutSalt$testemerchantSalt";
       if (postSalt != null) {
         hashDataWithSalt = hashDataWithSalt + postSalt;
       }
@@ -39,6 +52,7 @@ static const merchantSecretKey = "";// Add Merchant Secrete Key - Optional
     }
     //Don't use this method, get the hash from your backend.
     var finalHash = {hashName: hash};
+     log('print------------PESU---------- :final hash: ${finalHash.toString()}');
     return finalHash;
   }
 
@@ -49,6 +63,7 @@ static const merchantSecretKey = "";// Add Merchant Secrete Key - Optional
     return hash.toString();
   }
 
+ 
   //Don't use this method get the hash from your backend.
   static String getHmacSHA256Hash(String hashData, String salt) {
     var key = utf8.encode(salt);
