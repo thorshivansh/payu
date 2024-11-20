@@ -110,10 +110,10 @@ class _MyAppState extends State<MyApp> implements PayUCheckoutProProtocol {
       "txnid": txnId,
       "DueAmount": "21.00",
       "sname": "s401",
-      "email": "SHivanshu.pal@ayotta.com",
+      "email": "SHivanshu@abc.com",
       "feename": "academicfee",
       "instId": "1",
-//  "salt":"XGnf2PQnMT1tXTGVB01CVYDpnXBVkwCB",
+//  "salt":"",
       "UserId": "3018",
       "number": "9865985698",
       "LoginId": "s401",
@@ -122,7 +122,7 @@ class _MyAppState extends State<MyApp> implements PayUCheckoutProProtocol {
 // instId:1
       "fdFeeType": "1",
       "demandId": "86a7728a-2e2a-11ef-b67a-02700c6f9e91",
-      "sdkhash": "{hashString: Tggnk3|payment_related_details_for_mobile_sdk|Tggnk3:abc@gmail.com|, hashName: payment_related_details_for_mobile_sdk}"
+      "sdkhash": "{hashString: Tbbek3|payment_related_details_for_mobile_sdk|Tggnk3:abc@gmail.com|, hashName: payment_related_details_for_mobile_sdk}"
     });
 // Response response ;\
 BaseOptions options=BaseOptions(
@@ -275,14 +275,14 @@ BaseOptions options=BaseOptions(
                   // log(uuid.v7obj().toString(), name: 'uuid');
                 
                   // log(PayUParams.createPayUConfigParams().toString(), name: 'payu config');
-                  //                    const merchantSalt = "mMprU4id";// Add you Salt here.
+                  //                    const merchantSalt = "";// Add you Salt here.
                   //                  var  hashName= "payment_related_details_for_mobile_sdk";
-//                     String hashStringWithoutSalt = "3TnMpV|1716535661540|10|payu|shivanshu pal|shivanshu.pal@ayotta.com|shivashu|shivanshu.pal@ayotta.com|101|android|pesu||||||";
+//                     String hashStringWithoutSalt = "|17165356540|10|payu|shivanshu pal|shivanshu.p.com|shivashu|shivanshu..com|101|android|pesu||||||";
 //                        var hashDataWithSalt = hashStringWithoutSalt + merchantSalt;
 //                            generatedHash = getSHA512Hash(hashDataWithSalt);
 //   // var finalHash = {hashName: generatedHash};
 //   log(generatedHash.toString(), name: 'final hash');
-//   var hash ="{hashString: 3TnMpV|1716535661540|10|payu|shivanshu pal|shivanshu.pal@ayotta.com|shivashu|shivanshu.pal@ayotta.com|101|android|pesu||||||, hashName: payment_source}";
+//   var hash ="{hashString: 5Tnnd|1716535661540|10|payu|shivanshu |shivanshu.com|shivashu|shivanshu.com|101|android|pedeu||||||, hashName: payment_source}";
 //  var res= await getServerHash(hash);
 
 //  log(res.toString(), name: 'serveer hash');
@@ -314,7 +314,7 @@ class PayUTestCredentials {
   static const iosSurl =
       "https://wwww.pesuacademy.com/MAcademy/payment/PayuPaymentResponse/success";
   // static const testmerchantKey = "Kc9iwJ"; // Add you Merchant Key
-  static const livemerchantKey = "Tggnk3"; // Add you Merchant Key
+  static const livemerchantKey = ""; // Add you Merchant Key
 
   // static const merchantAccessKey = "";//Add Merchant Access Key - Optional
   // static const sodexoSourceId = ""; //Add sodexo Source Id - Optional
