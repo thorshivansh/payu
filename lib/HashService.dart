@@ -20,7 +20,7 @@ return UuidtxnId;
  }
 //Find the test credentials from dev guide: https://devguide.payu.in/flutter-sdk-integration/getting-started-flutter-sdk/mobile-sdk-test-environment/ 
 //Keep the hash in backend for Security reasons. 
-static const livemerchantSalt = "XGnf2PQnMT1tXTGVB01CVYDpnXBVkwCB";// Add you Salt here. 
+static const livemerchantSalt = "";// Add you Salt here. 
 static const testemerchantSalt = "mMprU4id";// Add you Salt here. 
 static const merchantSecretKey = "";// Add Merchant Secrete Key - Optional
 
